@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lakay Caribbean Restaurant - Menu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: #ffffff;
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: #fff;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            border: 3px solid #ff8c42;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            max-width: 400px;
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #ff8c42;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            color: #d4860f;
+            font-style: italic;
+            font-size: 1.2em;
+        }
+
+        .menu-section {
+            background: #f8f8f8;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            border: 2px solid #ff8c42;
+        }
+
+        .section-title {
+            color: #ff8c42;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #ff8c42;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .menu-item {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #ddd;
+        }
+
+        .menu-item:hover {
+            background: #fff5ed;
+            border-color: #ff8c42;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 140, 66, 0.3);
+        }
+
+        .menu-item:focus {
+            outline: 3px solid #ff8c42;
+            outline-offset: 2px;
+        }
+
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .item-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #d4860f;
+        }
+
+        .item-price {
+            font-size: 1.1em;
+            color: #ff8c42;
+            font-weight: bold;
+        }
+
+        .item-description {
+            color: #666;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            position: relative;
+            margin: 50px auto;
+            max-width: 800px;
+            background: #ffffff;
+            border-radius: 15px;
+            border: 3px solid #ff8c42;
+            overflow: hidden;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+
+        .modal-info {
+            padding: 30px;
+            background: #ffffff;
+        }
+
+        .modal-title {
+            font-size: 2em;
+            color: #d4860f;
+            margin-bottom: 10px;
+        }
+
+        .modal-price {
+            font-size: 1.5em;
+            color: #ff8c42;
+            margin-bottom: 15px;
+        }
+
+        .modal-description {
+            color: #333;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+            background: rgba(0, 0, 0, 0.7);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            background: #ff8c42;
+            transform: rotate(90deg);
+            outline: none;
+        }
+
+        .contact-info {
+            text-align: center;
+            padding: 20px;
+            background: #f8f8f8;
+            border-radius: 15px;
+            border: 2px solid #ff8c42;
+            margin-top: 40px;
+        }
+
+        .contact-info p {
+            color: #333;
+            font-size: 1.1em;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+
+        .no-image-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 500px;
+            background: #f0f0f0;
+            color: #666;
+            font-size: 1.2em;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .logo {
+                max-width: 280px;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                margin: 20px;
+            }
+
+            .modal-image,
+            .no-image-text {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="logo.jpeg" alt="Lakay Caribbean Restaurant Logo" class="logo">
+            <h1>Lakay Caribbean Restaurant</h1>
+            <p class="tagline">A Must Tropical Experience</p>
+        </header>
+
+        <div class="menu-section">
+            <h2 class="section-title">Appetizers</h2>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="openModal('Chicken Wrap', '$3.99', 'Grilled chicken wrapped in a soft tortilla with fresh vegetables and creamy sauce', 'chicken-wrap.jpg')" tabindex="0" role="button" aria-label="View Chicken Wrap details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Chicken Wrap</span>
+                        <span class="item-price">$3.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Plantain Bowl', '$4.99', 'Delicious fried plantains served in a bowl', '')" tabindex="0" role="button" aria-label="View Plantain Bowl details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Plantain Bowl</span>
+                        <span class="item-price">$4.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Chicken Sandwich', '$5.99', 'Grilled chicken sandwich with fresh toppings', '')" tabindex="0" role="button" aria-label="View Chicken Sandwich details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Chicken Sandwich</span>
+                        <span class="item-price">$5.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Salad (Chicken, Shrimp)', '$9.99', 'Fresh mixed greens with your choice of grilled chicken or shrimp', '')" tabindex="0" role="button" aria-label="View Salad details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Salad (Chicken, Shrimp)</span>
+                        <span class="item-price">$9.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-section">
+            <h2 class="section-title">Main Courses</h2>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="openModal('Chicken Stew', '$15.99', 'Traditional Caribbean chicken stew with rice and beans', 'stew.jpeg')" tabindex="0" role="button" aria-label="View Chicken Stew details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Chicken Stew</span>
+                        <span class="item-price">$15.99</span>
+                    </div>
+                    <p class="item-description">With rice and beans or white rice</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Fish (Fried)', '$30.99', 'Crispy fried fish served with your choice of side', '')" tabindex="0" role="button" aria-label="View Fried Fish details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Fish (Fried)</span>
+                        <span class="item-price">$30.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Goat Sauce', '$16.99', 'Tender goat meat in rich Caribbean sauce', '')" tabindex="0" role="button" aria-label="View Goat Sauce details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Goat Sauce</span>
+                        <span class="item-price">$16.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Boucanier Barbecue', '$12.99', 'Smoky Caribbean-style barbecue', '')" tabindex="0" role="button" aria-label="View Boucanier Barbecue details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Boucanier Barbecue</span>
+                        <span class="item-price">$12.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('The Island Pasta', '$12.99', 'Caribbean-inspired pasta dish', 'island-pasta.jpeg')" tabindex="0" role="button" aria-label="View Island Pasta details">
+                    <div class="menu-item-header">
+                        <span class="item-name">The Island Pasta</span>
+                        <span class="item-price">$12.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-section">
+            <h2 class="section-title">Fritay Platter</h2>
+            <p style="color: #d4860f; margin-bottom: 20px; font-style: italic; font-weight: 600;">Fried plantain, Akra, and fries</p>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="openModal('Paté', '$2.50', 'Traditional Haitian patty', '')" tabindex="0" role="button" aria-label="View Paté details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Paté</span>
+                        <span class="item-price">$2.50</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Lamb', '$17.99', 'Tender fried lamb with plantain, akra, and fries', '')" tabindex="0" role="button" aria-label="View Lamb details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Lamb</span>
+                        <span class="item-price">$17.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Goat Tasso', '$17.99', 'Fried goat with plantain, akra, and fries', 'fritay.jpeg')" tabindex="0" role="button" aria-label="View Goat Tasso details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Goat Tasso</span>
+                        <span class="item-price">$17.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Fried Turkey', '$15.99', 'Crispy fried turkey with plantain, akra, and fries', '')" tabindex="0" role="button" aria-label="View Fried Turkey details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Fried Turkey</span>
+                        <span class="item-price">$15.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Fried Chicken', '$15.99', 'Golden fried chicken with plantain, akra, and fries', '')" tabindex="0" role="button" aria-label="View Fried Chicken details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Fried Chicken</span>
+                        <span class="item-price">$15.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Fried Pork (Griot)', '$15.99', 'Traditional Haitian griot with plantain, akra, and fries', 'fritay2.jpeg')" tabindex="0" role="button" aria-label="View Fried Pork details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Fried Pork (Griot)</span>
+                        <span class="item-price">$15.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Fried Fish', '$25.99-$30.99', 'Crispy whole fried fish with plantain, akra, and fries', '')" tabindex="0" role="button" aria-label="View Fried Fish details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Fried Fish</span>
+                        <span class="item-price">$25.99-$30.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Side (Lasagna, Gratiné)', '$5.99', 'Delicious side dish options', 'lasagna.jpeg')" tabindex="0" role="button" aria-label="View Side dishes details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Side (Lasagna, Gratiné)</span>
+                        <span class="item-price">$5.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-section">
+            <h2 class="section-title">Beverages</h2>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="openModal('Lemonade', '$3.99', 'Fresh squeezed lemonade', '')" tabindex="0" role="button" aria-label="View Lemonade details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Lemonade</span>
+                        <span class="item-price">$3.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Tropical Mix', '$4.99', 'Refreshing tropical fruit blend', 'cocktails.jpeg')" tabindex="0" role="button" aria-label="View Tropical Mix details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Tropical Mix</span>
+                        <span class="item-price">$4.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Orange Juice', '$4.99', 'Fresh orange juice', '')" tabindex="0" role="button" aria-label="View Orange Juice details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Orange Juice</span>
+                        <span class="item-price">$4.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Coffee', '$2.99', 'Fresh brewed coffee', '')" tabindex="0" role="button" aria-label="View Coffee details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Coffee</span>
+                        <span class="item-price">$2.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Chocolate', '$4.99', 'Rich hot chocolate', '')" tabindex="0" role="button" aria-label="View Chocolate details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Chocolate</span>
+                        <span class="item-price">$4.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Tea', '$3.99', 'Selection of teas', '')" tabindex="0" role="button" aria-label="View Tea details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Tea</span>
+                        <span class="item-price">$3.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-section">
+            <h2 class="section-title">Daily Specials</h2>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="openModal('Wednesday: Legume', '$17.99', 'Traditional Caribbean vegetable stew', '')" tabindex="0" role="button" aria-label="View Wednesday special details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Wednesday: Legume</span>
+                        <span class="item-price">$17.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Thursday: Lalo', '$18.99', 'Jute leaves stew', '')" tabindex="0" role="button" aria-label="View Thursday special details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Thursday: Lalo</span>
+                        <span class="item-price">$18.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Friday: Bouillon', '$12.99', 'Hearty Caribbean soup', '')" tabindex="0" role="button" aria-label="View Friday special details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Friday: Bouillon</span>
+                        <span class="item-price">$12.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Saturday: Soup Joumou', '$12.99', 'Traditional pumpkin soup', 'soupjoumou.jpeg')" tabindex="0" role="button" aria-label="View Saturday special details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Saturday: Soup Joumou</span>
+                        <span class="item-price">$12.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+
+                <div class="menu-item" onclick="openModal('Sunday: Sea Food Boil', '$19.99', 'Mixed seafood boil with spices', '')" tabindex="0" role="button" aria-label="View Sunday special details">
+                    <div class="menu-item-header">
+                        <span class="item-name">Sunday: Sea Food Boil</span>
+                        <span class="item-price">$19.99</span>
+                    </div>
+                    <p class="item-description">Click to view image</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-info">
+            <p>📞 +1 765 201 66 81</p>
+            <p>📍 118 West Main st, Delphi, Indiana 46923</p>
+        </div>
+    </div>
+
+    <div id="imageModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()" tabindex="0" role="button" aria-label="Close modal">&times;</span>
+            <img id="modalImage" class="modal-image" src="" alt="" style="display: none;">
+            <div id="noImageText" class="no-image-text" style="display: none;">Image not available</div>
+            <div class="modal-info">
+                <h2 id="modalTitle" class="modal-title"></h2>
+                <p id="modalPrice" class="modal-price"></p>
+                <p id="modalDescription" class="modal-description"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(name, price, description, imageUrl) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const noImageText = document.getElementById('noImageText');
+            
+            modal.style.display = 'block';
+            document.getElementById('modalTitle').textContent = name;
+            document.getElementById('modalPrice').textContent = price;
+            document.getElementById('modalDescription').textContent = description;
+            
+            if (imageUrl && imageUrl.trim() !== '') {
+                modalImage.src = imageUrl;
+                modalImage.alt = name;
+                modalImage.style.display = 'block';
+                noImageText.style.display = 'none';
+                
+                modalImage.onerror = function() {
+                    modalImage.style.display = 'none';
+                    noImageText.style.display = 'flex';
+                };
+            } else {
+                modalImage.style.display = 'none';
+                noImageText.style.display = 'flex';
+            }
+            
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Add keyboard support for menu items
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+
+        // Add keyboard support for close button
+        document.querySelector('.close').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
